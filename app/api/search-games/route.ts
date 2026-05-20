@@ -17,10 +17,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "fetch failed", detail: String(e) }, { status: 500 });
   }
 
-  if (!res.ok) {
-    const text = await res.text();
-    return NextResponse.json({ error: "RAWG error", status: res.status, body: text }, { status: 502 });
-  }
+  if (!res.ok) return NextResponse.json([]);
 
   const data = await res.json();
   const results = (data.results ?? []).map((g: {
