@@ -35,3 +35,15 @@ pm install prisma@5 @prisma/client@5
 **Cause:** Tool runs in non-interactive shell environment  
 **Solution:** Use prisma db push --accept-data-loss for development schema sync instead  
 **Status:** Resolved
+
+### Admin login redirect loop (ERR_TOO_MANY_REDIRECTS)
+**Problem:** /admin/login was wrapped by pp/admin/layout.tsx which redirects unauthenticated users to /admin/login — creating an infinite loop  
+**Cause:** Admin layout protected ALL routes under /admin including the login page itself  
+**Solution:** Moved protected pages into pp/admin/(protected)/ route group — login page stays outside, URLs remain the same  
+**Status:** ✅ Resolved
+
+### Event handlers in Server Components
+**Problem:** onMouseEnter/onMouseLeave cannot be passed to Client Component props in Server Components  
+**Cause:** GameCard.tsx and admin page components had event handlers but no "use client" directive  
+**Solution:** Added "use client" to GameCard.tsx, extracted AdminActionCards and AdminGameList as separate Client Components  
+**Status:** ✅ Resolved
