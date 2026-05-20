@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
-  const { title, platform, genre, status, startDate } = body;
+  const { title, platform, genre, status, startDate, coverUrl } = body;
 
   const game = await prisma.game.create({
     data: {
@@ -17,6 +17,7 @@ export async function POST(req: Request) {
       genre: genre || null,
       status: status || "PLAYING",
       startDate: startDate ? new Date(startDate) : null,
+      coverUrl: coverUrl || null,
     },
   });
 
