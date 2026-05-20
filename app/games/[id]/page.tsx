@@ -15,12 +15,12 @@ async function getGame(id: string) {
 }
 
 const SCORE_LABELS = [
-  { key: "scoreStory",     label: "Story" },
-  { key: "scoreCharacter", label: "Characters" },
-  { key: "scoreArt",       label: "Art" },
-  { key: "scoreSound",     label: "Sound" },
-  { key: "scoreGameplay",  label: "Gameplay" },
-  { key: "scoreDifficulty",label: "Difficulty" },
+  { key: "scoreStory",      label: "Story",      commentKey: "commentStory" },
+  { key: "scoreCharacter",  label: "Characters", commentKey: "commentCharacter" },
+  { key: "scoreGraphics",   label: "Graphics",   commentKey: "commentGraphics" },
+  { key: "scoreSound",      label: "Sound",      commentKey: "commentSound" },
+  { key: "scoreGameplay",   label: "Gameplay",   commentKey: "commentGameplay" },
+  { key: "scoreDifficulty", label: "Difficulty", commentKey: "commentDifficulty" },
 ] as const;
 
 export default async function GameDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -79,19 +79,25 @@ export default async function GameDetailPage({ params }: { params: Promise<{ id:
       </div>
 
       {/* Ratings */}
-      {SCORE_LABELS.some(({ key }) => game[key] !== null) && (
+      {SCORE_LABELS.some(({ key }) => (game as Record<string, unknown>)[key] !== null) && (
         <div
           className="rounded-xl p-5 grid grid-cols-2 sm:grid-cols-3 gap-4"
           style={{ backgroundColor: "#0f0f1a", border: "1px solid #1e1e35" }}
         >
-          {SCORE_LABELS.map(({ key, label }) => (
-            game[key] !== null && (
+          {SCORE_LABELS.map(({ key, label, commentKey }) => {
+            const score = (game as Record<string, unknown>)[key] as number | null;
+            const comment = (game as Record<string, unknown>)[commentKey] as string | null;
+            if (score === null) return null;
+            return (
               <div key={key} className="flex flex-col gap-1">
                 <p className="text-xs" style={{ color: "#4a4a6a" }}>{label}</p>
-                <StarRating value={game[key]} />
+                <StarRating value={score} />
+                {comment && (
+                  <p className="text-xs mt-0.5 leading-relaxed" style={{ color: "#4a4a6a" }}>{comment}</p>
+                )}
               </div>
-            )
-          ))}
+            );
+          })}
         </div>
       )}
 

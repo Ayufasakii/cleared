@@ -38,10 +38,16 @@ model Game {
   coverUrl        String?
   scoreStory      Int?
   scoreCharacter  Int?
-  scoreArt        Int?
+  scoreGraphics   Int?
   scoreSound      Int?
   scoreGameplay   Int?
   scoreDifficulty Int?
+  commentStory      String?
+  commentCharacter  String?
+  commentGraphics   String?
+  commentSound      String?
+  commentGameplay   String?
+  commentDifficulty String?
   review          String?
   highlight       String?
   quote           String?

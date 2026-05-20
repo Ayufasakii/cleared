@@ -4,10 +4,10 @@ export function calcAvgScore(game: GameWithTrophies): number | null {
   const scores = [
     game.scoreStory,
     game.scoreCharacter,
-    game.scoreArt,
+    game.scoreGraphics,
     game.scoreSound,
     game.scoreGameplay,
-    game.scoreDifficulty,
+    // scoreDifficulty intentionally excluded from average
   ].filter((s): s is number => s !== null);
   if (scores.length === 0) return null;
   return Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10;
