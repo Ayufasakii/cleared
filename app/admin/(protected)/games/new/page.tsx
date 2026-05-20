@@ -49,18 +49,24 @@ export default function AddGamePage() {
     debounceRef.current = setTimeout(async () => {
       setSearching(true);
       try {
-        const res = await fetch(`/api/search-games?q=${encodeURIComponent(val)}`);
+        const key = process.env.NEXT_PUBLIC_RAWG_API_KEY;
+        const res = await fetch(
+          `https://api.rawg.io/api/games?key=${key}&search=${encodeURIComponent(val)}&page_size=6`,
+        );
         const data = await res.json();
-        if (!Array.isArray(data)) {
-          console.error("search-games error:", data);
-          setSuggestions([]);
-          setShowDropdown(false);
-          return;
-        }
-        setSuggestions(data);
-        setShowDropdown(data.length > 0);
+        const list: GameSuggestion[] = (data.results ?? []).map((g: {
+          name: string;
+          background_image: string | null;
+          genres: { name: string }[];
+        }) => ({
+          name: g.name,
+          cover: g.background_image ?? null,
+          genre: g.genres.map((x: { name: string }) => x.name).slice(0, 2).join(", ") || null,
+        }));
+        setSuggestions(list);
+        setShowDropdown(list.length > 0);
       } catch (e) {
-        console.error("search-games fetch error:", e);
+        console.error(e);
       } finally {
         setSearching(false);
       }
