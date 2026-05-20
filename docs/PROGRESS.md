@@ -1,4 +1,4 @@
-# Progress Log
+﻿# Progress Log
 
 ## 2026-05-20
 
@@ -7,16 +7,23 @@
 - [x] Created GitHub repo (public): https://github.com/Ayufasakii/cleared
 - [x] Pushed initial commit to master branch
 
-### In Progress
-- [ ] GitHub Projects board setup
-- [ ] Vercel deployment setup
-- [ ] Install core dependencies (Prisma, NextAuth, psn-api)
-- [ ] Database schema design
+### Completed
+- [x] GitHub Projects board setup (13 issues created)
+- [x] Vercel deployment — cleared-ivory.vercel.app
+- [x] Neon PostgreSQL + Vercel Blob
+- [x] Prisma v5 schema (Game, Trophy, JournalEntry)
+- [x] Space Grotesk + midnight color palette
+- [x] Navbar component
+- [x] NextAuth (username/password)
+- [x] Homepage — Stats, NowClearing, GameCard sections
+- [x] Admin login page
+- [x] Admin dashboard
 
 ---
 
 ## Log Format
 Each session adds a new date entry with:
-- ✅ Completed tasks
-- 🔄 In progress
-- ❌ Blocked / problems (see PROBLEMS.md)
+- โ… Completed tasks
+- ๐” In progress
+- โ Blocked / problems (see PROBLEMS.md)
+
