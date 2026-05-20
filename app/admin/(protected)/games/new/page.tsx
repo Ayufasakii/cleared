@@ -50,9 +50,17 @@ export default function AddGamePage() {
       setSearching(true);
       try {
         const res = await fetch(`/api/search-games?q=${encodeURIComponent(val)}`);
-        const data: GameSuggestion[] = await res.json();
+        const data = await res.json();
+        if (!Array.isArray(data)) {
+          console.error("search-games error:", data);
+          setSuggestions([]);
+          setShowDropdown(false);
+          return;
+        }
         setSuggestions(data);
         setShowDropdown(data.length > 0);
+      } catch (e) {
+        console.error("search-games fetch error:", e);
       } finally {
         setSearching(false);
       }

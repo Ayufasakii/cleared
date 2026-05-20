@@ -1,21 +1,26 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 
 export async function GET(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
   const { searchParams } = new URL(req.url);
   const q = searchParams.get("q")?.trim();
   if (!q || q.length < 2) return NextResponse.json([]);
 
   const key = process.env.RAWG_API_KEY;
-  if (!key) return NextResponse.json({ error: "RAWG_API_KEY not configured" }, { status: 500 });
+  if (!key) return NextResponse.json({ error: "RAWG_API_KEY not set" }, { status: 500 });
 
   const url = `https://api.rawg.io/api/games?key=${key}&search=${encodeURIComponent(q)}&page_size=6`;
-  const res = await fetch(url, { next: { revalidate: 60 } });
-  if (!res.ok) return NextResponse.json([]);
+
+  let res: Response;
+  try {
+    res = await fetch(url, { cache: "no-store" });
+  } catch (e) {
+    return NextResponse.json({ error: "fetch failed", detail: String(e) }, { status: 500 });
+  }
+
+  if (!res.ok) {
+    const text = await res.text();
+    return NextResponse.json({ error: "RAWG error", status: res.status, body: text }, { status: 502 });
+  }
 
   const data = await res.json();
   const results = (data.results ?? []).map((g: {
