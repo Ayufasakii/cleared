@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 
 const links = [
-  { href: "/admin",          label: "Dashboard" },
+  { href: "/admin",           label: "Dashboard" },
   { href: "/admin/games/new", label: "Add Game" },
-  { href: "/admin/journal",  label: "Journal" },
+  { href: "/admin/journal",   label: "Journal" },
+  { href: "/admin/settings",  label: "PSN" },
 ];
 
 export default function AdminNav() {

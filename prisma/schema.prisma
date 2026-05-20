@@ -81,6 +81,14 @@ model Trophy {
 
   game           Game           @relation(fields: [gameId], references: [id], onDelete: Cascade)
   journalEntries JournalEntry[] @relation("JournalTrophies")
+
+  @@unique([gameId, psnTrophyId])
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
 }
 
 model JournalEntry {
