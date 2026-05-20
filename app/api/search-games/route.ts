@@ -13,7 +13,7 @@ export async function GET(req: Request) {
   const key = process.env.RAWG_API_KEY;
   if (!key) return NextResponse.json({ error: "RAWG_API_KEY not configured" }, { status: 500 });
 
-  const url = `https://api.rawg.io/api/games?key=${key}&search=${encodeURIComponent(q)}&page_size=6&ordering=-rating`;
+  const url = `https://api.rawg.io/api/games?key=${key}&search=${encodeURIComponent(q)}&page_size=6`;
   const res = await fetch(url, { next: { revalidate: 60 } });
   if (!res.ok) return NextResponse.json([]);
 
