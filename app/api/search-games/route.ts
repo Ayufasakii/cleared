@@ -12,7 +12,10 @@ export async function GET(req: Request) {
 
   let res: Response;
   try {
-    res = await fetch(url, { cache: "no-store" });
+    res = await fetch(url, {
+      cache: "no-store",
+      headers: { "User-Agent": "cleared-app/1.0" },
+    });
   } catch (e) {
     return NextResponse.json({ error: "fetch failed", detail: String(e) }, { status: 500 });
   }
@@ -20,6 +23,12 @@ export async function GET(req: Request) {
   if (!res.ok) return NextResponse.json([]);
 
   const data = await res.json();
+
+  // DEBUG
+  if ((data.results ?? []).length === 0) {
+    return NextResponse.json({ _debug: true, count: data.count, results: data.results, detail: data });
+  }
+
   const results = (data.results ?? []).map((g: {
     name: string;
     background_image: string | null;
