@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Platform {
+  PS4
+  PS5
+  PC
+  SWITCH
+  OTHER
+}
+
+enum GameStatus {
+  PLAYING
+  PLATINUM
+  DROPPED
+}
+
+enum TrophyGrade {
+  PLATINUM
+  GOLD
+  SILVER
+  BRONZE
+}
+
+model Game {
+  id              String     @id @default(cuid())
+  title           String
+  platform        Platform
+  genre           String?
+  status          GameStatus @default(PLAYING)
+  coverUrl        String?
+  scoreStory      Int?
+  scoreCharacter  Int?
+  scoreArt        Int?
+  scoreSound      Int?
+  scoreGameplay   Int?
+  scoreDifficulty Int?
+  review          String?
+  highlight       String?
+  quote           String?
+  replayValue     Int?
+  moodTags        String[]
+  startDate       DateTime?
+  platinumDate    DateTime?
+  psnGameId       String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  trophies       Trophy[]
+  journalEntries JournalEntry[]
+}
+
+model Trophy {
+  id          String      @id @default(cuid())
+  gameId      String
+  name        String
+  grade       TrophyGrade
+  imageUrl    String?
+  rarity      Float?
+  difficulty  Int?
+  fun         Int?
+  note        String?
+  earned      Boolean     @default(false)
+  earnedAt    DateTime?
+  psnTrophyId String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  game           Game           @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  journalEntries JournalEntry[] @relation("JournalTrophies")
+}
+
+model JournalEntry {
+  id        String   @id @default(cuid())
+  gameId    String?
+  date      DateTime
+  mood      String?
+  diary     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  game     Game?    @relation(fields: [gameId], references: [id], onDelete: SetNull)
+  trophies Trophy[] @relation("JournalTrophies")
+}
