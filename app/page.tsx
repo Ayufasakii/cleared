@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { prisma } from "@/lib/prisma";
 import { calcAvgScore, getPlatinumCount, getTotalTrophies } from "@/lib/utils";
 import type { GameWithTrophies } from "@/lib/types";

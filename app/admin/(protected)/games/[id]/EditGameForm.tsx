@@ -57,6 +57,7 @@ export default function EditGameForm({ game }: { game: Game }) {
       }),
     });
     router.refresh();
+    router.push("/admin");
     setLoading(false);
   }
 
@@ -78,7 +79,6 @@ export default function EditGameForm({ game }: { game: Game }) {
         </button>
       </div>
 
-      {/* Basic info */}
       <Field label="Title" name="title" defaultValue={game.title} required />
 
       <div className="flex flex-wrap gap-2">
@@ -104,7 +104,6 @@ export default function EditGameForm({ game }: { game: Game }) {
           defaultValue={game.platinumDate ? new Date(game.platinumDate).toISOString().split("T")[0] : ""} />
       </div>
 
-      {/* Ratings */}
       <div className="flex flex-col gap-3">
         <p className="text-xs font-semibold tracking-widest uppercase" style={{ color: "#4a4a6a" }}>Ratings</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -125,7 +124,6 @@ export default function EditGameForm({ game }: { game: Game }) {
         </div>
       </div>
 
-      {/* Review fields */}
       <div className="flex flex-col gap-2">
         <label className="text-xs font-semibold tracking-widest uppercase" style={{ color: "#4a4a6a" }}>Review</label>
         <textarea name="review" rows={4} defaultValue={game.review ?? ""}
