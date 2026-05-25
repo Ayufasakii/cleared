@@ -3,6 +3,7 @@ import { Space_Grotesk } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import SessionProvider from "@/components/SessionProvider";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import CursorGlow from "@/components/CursorGlow";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <SessionProvider>
           <AnimatedBackground />
+          <CursorGlow />
           <Navbar />
           <main className="flex-1 max-w-6xl mx-auto w-full px-6 py-8" style={{ position: "relative", zIndex: 1 }}>
             {children}

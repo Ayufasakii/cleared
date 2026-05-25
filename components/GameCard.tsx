@@ -13,58 +13,71 @@ const STATUS_GLOW: Record<string, string> = {
 };
 
 export default function GameCard({ game }: { game: GameWithTrophies }) {
-  const avg = calcAvgScore(game);
+  const avg    = calcAvgScore(game);
   const earned = game.trophies.filter((t) => t.earned).length;
-  const total = game.trophies.length;
-  const glow = STATUS_GLOW[game.status] ?? "#7c6dff";
+  const total  = game.trophies.length;
+  const glow   = STATUS_GLOW[game.status] ?? "#7c6dff";
 
   return (
     <Link href={`/games/${game.id}`} className="block h-full">
       <div
-        className="group rounded-xl overflow-hidden h-full transition-all duration-300 cursor-pointer"
+        className="group glass rounded-xl overflow-hidden h-full cursor-pointer"
         style={{
-          backgroundColor: "#0f0f1a",
-          border: "1px solid #1e1e35",
+          border: "1px solid rgba(255,255,255,0.07)",
+          boxShadow: "0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)",
+          transition: "transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s, border-color 0.35s",
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLDivElement;
-          el.style.border = `1px solid ${glow}60`;
-          el.style.transform = "translateY(-3px)";
-          el.style.boxShadow = `0 8px 32px ${glow}20`;
+          el.style.transform = "translateY(-6px)";
+          el.style.borderColor = `${glow}50`;
+          el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), 0 0 40px ${glow}25, inset 0 1px 0 rgba(255,255,255,0.08)`;
         }}
         onMouseLeave={(e) => {
           const el = e.currentTarget as HTMLDivElement;
-          el.style.border = "1px solid #1e1e35";
           el.style.transform = "translateY(0)";
-          el.style.boxShadow = "none";
+          el.style.borderColor = "rgba(255,255,255,0.07)";
+          el.style.boxShadow = "0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)";
         }}
       >
-        {/* Cover Image */}
+        {/* Cover */}
         <div className="relative w-full aspect-[16/9] overflow-hidden"
-          style={{ backgroundColor: "#1e1e35" }}>
+          style={{ backgroundColor: "#0a0a16" }}>
           {game.coverUrl ? (
             <Image
-              src={game.coverUrl}
-              alt={game.title}
-              fill
-              unoptimized
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              src={game.coverUrl} alt={game.title} fill unoptimized
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
               sizes="(max-width: 768px) 100vw, 33vw"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <span style={{ color: "#1e1e35", fontSize: "2.5rem" }}>🎮</span>
+            <div className="w-full h-full flex items-center justify-center"
+              style={{ background: `radial-gradient(circle, ${glow}15, transparent)` }}>
+              <span style={{ fontSize: "2.5rem", opacity: 0.3 }}>🎮</span>
             </div>
           )}
-          {/* Status tint overlay on hover */}
-          <div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            style={{ background: `linear-gradient(to top, ${glow}30, transparent 60%)` }}
+          {/* Bottom gradient overlay */}
+          <div style={{
+            position: "absolute", inset: 0,
+            background: `linear-gradient(to top, ${glow}30 0%, transparent 50%)`,
+            opacity: 0,
+            transition: "opacity 0.35s",
+          }}
+            className="group-hover:opacity-100"
           />
         </div>
 
         {/* Info */}
-        <div className="p-4 flex flex-col gap-2">
+        <div className="p-4 flex flex-col gap-2.5">
+          {/* Top accent */}
+          <div style={{
+            height: "1px",
+            background: `linear-gradient(to right, ${glow}60, transparent)`,
+            marginTop: "-16px",
+            marginLeft: "-16px",
+            marginRight: "-16px",
+            marginBottom: "8px",
+          }} />
+
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-semibold text-sm leading-tight" style={{ color: "#e8e8f0" }}>
               {game.title}
@@ -77,23 +90,24 @@ export default function GameCard({ game }: { game: GameWithTrophies }) {
               {game.platform}{game.genre && ` · ${game.genre}`}
             </span>
             {avg !== null && (
-              <span className="text-sm font-bold" style={{ color: glow }}>
+              <span className="text-sm font-bold" style={{
+                background: `linear-gradient(135deg, #e8e8f0, ${glow})`,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}>
                 {avg}
               </span>
             )}
           </div>
 
           {total > 0 && (
-            <div className="flex items-center gap-2 mt-1">
-              <div className="flex-1 h-1 rounded-full overflow-hidden"
-                style={{ backgroundColor: "#1e1e35" }}>
-                <div
-                  className="h-full rounded-full transition-all"
-                  style={{
-                    width: `${(earned / total) * 100}%`,
-                    backgroundColor: glow,
-                  }}
-                />
+            <div className="flex items-center gap-2">
+              <div className="flex-1 h-0.5 rounded-full overflow-hidden"
+                style={{ backgroundColor: "rgba(255,255,255,0.06)" }}>
+                <div className="h-full rounded-full transition-all"
+                  style={{ width: `${(earned / total) * 100}%`, backgroundColor: glow,
+                    boxShadow: `0 0 6px ${glow}` }} />
               </div>
               <span className="text-xs shrink-0" style={{ color: "#4a4a6a" }}>
                 {earned}/{total}

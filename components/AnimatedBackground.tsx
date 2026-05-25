@@ -10,29 +10,32 @@ export default function AnimatedBackground() {
       {/* Purple orb — top-left */}
       <div style={{
         position: "absolute",
-        width: "700px", height: "700px",
+        width: "900px", height: "900px",
         borderRadius: "50%",
-        background: "radial-gradient(circle, #7c6dff18 0%, transparent 68%)",
-        top: "-260px", left: "-220px",
-        animation: "floatOrb 18s ease-in-out infinite",
+        background: "radial-gradient(circle, rgba(124,109,255,0.18) 0%, transparent 65%)",
+        top: "-350px", left: "-280px",
+        animation: "floatOrb 20s ease-in-out infinite",
+        filter: "blur(2px)",
       }} />
-      {/* Blue orb — bottom-right */}
+      {/* Cyan orb — bottom-right */}
       <div style={{
         position: "absolute",
-        width: "580px", height: "580px",
+        width: "750px", height: "750px",
         borderRadius: "50%",
-        background: "radial-gradient(circle, #4fc3f712 0%, transparent 68%)",
-        bottom: "-180px", right: "-180px",
-        animation: "floatOrb 24s ease-in-out infinite reverse",
+        background: "radial-gradient(circle, rgba(79,195,247,0.12) 0%, transparent 65%)",
+        bottom: "-250px", right: "-200px",
+        animation: "floatOrb 26s ease-in-out infinite reverse",
+        filter: "blur(2px)",
       }} />
-      {/* Small violet orb — center */}
+      {/* Small violet — mid */}
       <div style={{
         position: "absolute",
-        width: "320px", height: "320px",
+        width: "400px", height: "400px",
         borderRadius: "50%",
-        background: "radial-gradient(circle, #7c6dff0a 0%, transparent 70%)",
-        top: "45%", left: "38%",
-        animation: "floatOrb 30s ease-in-out infinite 8s",
+        background: "radial-gradient(circle, rgba(160,100,255,0.10) 0%, transparent 70%)",
+        top: "42%", left: "42%",
+        animation: "floatOrb 34s ease-in-out infinite 10s",
+        filter: "blur(1px)",
       }} />
     </div>
   );

@@ -6,90 +6,117 @@ import type { GameWithTrophies } from "@/lib/types";
 
 export default function NowClearingHero({ game }: { game: GameWithTrophies }) {
   const earned = game.trophies.filter((t) => t.earned).length;
-  const total = game.trophies.length;
-  const pct = total > 0 ? Math.round((earned / total) * 100) : 0;
+  const total  = game.trophies.length;
+  const pct    = total > 0 ? (earned / total) * 100 : 0;
 
   return (
     <Link href={`/games/${game.id}`} className="block group">
       <div
-        className="relative rounded-2xl overflow-hidden cursor-pointer"
+        className="relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500"
         style={{
-          minHeight: "200px",
-          animation: "shimmerBorder 4s ease-in-out infinite",
-          border: "1px solid #7c6dff50",
+          minHeight: "220px",
+          border: "1px solid rgba(124,109,255,0.35)",
+          boxShadow: "0 0 0 1px rgba(124,109,255,0.1), 0 8px 48px rgba(124,109,255,0.15), inset 0 1px 0 rgba(255,255,255,0.05)",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLDivElement).style.boxShadow =
+            "0 0 0 1px rgba(124,109,255,0.4), 0 16px 64px rgba(124,109,255,0.3), 0 0 100px rgba(79,195,247,0.1), inset 0 1px 0 rgba(255,255,255,0.08)";
+          (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(124,109,255,0.6)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLDivElement).style.boxShadow =
+            "0 0 0 1px rgba(124,109,255,0.1), 0 8px 48px rgba(124,109,255,0.15), inset 0 1px 0 rgba(255,255,255,0.05)";
+          (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(124,109,255,0.35)";
         }}
       >
-        {/* Blurred cover art background */}
+        {/* Blurred cover bg */}
         {game.coverUrl && (
-          <div
-            style={{
-              position: "absolute", inset: 0,
-              backgroundImage: `url(${game.coverUrl})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "blur(28px)",
-              transform: "scale(1.15)",
-              opacity: 0.25,
-            }}
-          />
+          <div style={{
+            position: "absolute", inset: 0,
+            backgroundImage: `url(${game.coverUrl})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(32px) saturate(1.4)",
+            transform: "scale(1.2)",
+            opacity: 0.18,
+            transition: "opacity 0.5s",
+          }} />
         )}
 
-        {/* Gradient overlay */}
+        {/* Dark glass overlay */}
+        <div className="glass" style={{ position: "absolute", inset: 0 }} />
+
+        {/* Gradient top-left glow */}
         <div style={{
           position: "absolute", inset: 0,
-          background: game.coverUrl
-            ? "linear-gradient(120deg, #08080fcc 40%, #0f0f1a88)"
-            : "linear-gradient(120deg, #0f0f1a 0%, #08080f 100%)",
-        }} />
-
-        {/* Left accent bar */}
-        <div style={{
-          position: "absolute", left: 0, top: 0, bottom: 0,
-          width: "3px",
-          background: "linear-gradient(to bottom, #7c6dff, #4fc3f7)",
+          background: "radial-gradient(ellipse at 0% 0%, rgba(124,109,255,0.12) 0%, transparent 60%)",
         }} />
 
         {/* Content */}
-        <div className="relative flex items-center gap-6 p-6 sm:p-8">
-          {/* Cover thumbnail */}
+        <div className="relative flex items-center gap-6 sm:gap-8 p-6 sm:p-10">
+          {/* Cover */}
           {game.coverUrl && (
-            <div className="relative shrink-0 w-24 h-32 sm:w-28 sm:h-36 rounded-xl overflow-hidden shadow-2xl"
-              style={{ boxShadow: "0 8px 32px #7c6dff30" }}>
-              <Image src={game.coverUrl} alt={game.title} fill unoptimized
-                className="object-cover transition-transform duration-500 group-hover:scale-105" />
+            <div className="relative shrink-0 rounded-xl overflow-hidden"
+              style={{
+                width: "100px", height: "130px",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(124,109,255,0.2)",
+                transition: "transform 0.4s ease, box-shadow 0.4s ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLDivElement).style.transform = "scale(1.05) rotate(-1deg)";
+                (e.currentTarget as HTMLDivElement).style.boxShadow = "0 16px 48px rgba(0,0,0,0.7), 0 0 0 1px rgba(124,109,255,0.4)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLDivElement).style.transform = "";
+                (e.currentTarget as HTMLDivElement).style.boxShadow = "0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(124,109,255,0.2)";
+              }}
+            >
+              <Image src={game.coverUrl} alt={game.title} fill unoptimized className="object-cover" />
             </div>
           )}
 
-          {/* Info */}
+          {/* Text */}
           <div className="flex flex-col gap-3 flex-1 min-w-0">
-            <p className="text-xs font-bold tracking-[0.2em] uppercase"
-              style={{ color: "#7c6dff" }}>
-              ▶ Now Clearing
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-bold leading-tight truncate"
-              style={{ color: "#e8e8f0" }}>
+            {/* Label */}
+            <div className="flex items-center gap-2">
+              <span style={{
+                width: 8, height: 8, borderRadius: "50%",
+                backgroundColor: "#7c6dff",
+                boxShadow: "0 0 8px #7c6dff, 0 0 16px #7c6dff80",
+                animation: "shimmerBorder 2s ease-in-out infinite",
+                display: "inline-block",
+              }} />
+              <span className="text-xs font-bold tracking-[0.25em] uppercase"
+                style={{ color: "#7c6dff" }}>
+                Now Clearing
+              </span>
+            </div>
+
+            {/* Title — gradient */}
+            <h2 className="gradient-text font-bold leading-tight"
+              style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)" }}>
               {game.title}
             </h2>
+
             <p className="text-sm" style={{ color: "#4a4a6a" }}>
               {game.platform}{game.genre && ` · ${game.genre}`}
             </p>
 
             {total > 0 && (
-              <div className="flex flex-col gap-1.5 mt-1">
+              <div className="flex flex-col gap-1.5 max-w-xs mt-1">
                 <div className="flex justify-between text-xs" style={{ color: "#4a4a6a" }}>
-                  <span>Trophy Progress</span>
-                  <span style={{ color: "#4fc3f7" }}>{earned} / {total} 🏆</span>
+                  <span>Trophies</span>
+                  <span style={{ color: "#4fc3f7", fontWeight: 600 }}>{earned} / {total}</span>
                 </div>
-                <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "#1e1e35" }}>
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: `${pct}%`,
-                      background: "linear-gradient(to right, #7c6dff, #4fc3f7)",
-                      animation: "progressFill 1.2s cubic-bezier(.22,1,.36,1) both",
-                      animationDelay: "0.3s",
-                    }}
-                  />
+                <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.06)" }}>
+                  <div style={{
+                    height: "100%",
+                    width: `${pct}%`,
+                    background: "linear-gradient(to right, #7c6dff, #4fc3f7)",
+                    borderRadius: "9999px",
+                    animation: "progressFill 1.4s cubic-bezier(.22,1,.36,1) both 0.4s",
+                    boxShadow: "0 0 8px rgba(124,109,255,0.6)",
+                  }} />
                 </div>
               </div>
             )}
