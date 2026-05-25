@@ -44,7 +44,7 @@ export default async function GameDetailPage({ params }: { params: Promise<{ id:
   const hasContent = !!(game.review || game.highlight || game.quote);
 
   return (
-    <div className="flex flex-col gap-10 max-w-4xl" style={{ animation: "fadeSlideUp 0.55s cubic-bezier(.22,1,.36,1) both" }}>
+    <div className="flex flex-col gap-10 max-w-4xl w-full min-w-0" style={{ animation: "fadeSlideUp 0.55s cubic-bezier(.22,1,.36,1) both" }}>
 
       {/* ── Recap Slideshow ── */}
       <GameRecap game={game} />
