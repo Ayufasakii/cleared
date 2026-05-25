@@ -46,3 +46,31 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #7c6dff;
 }
+
+@keyframes floatOrb {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%      { transform: translate(40px,-40px) scale(1.08); }
+  66%      { transform: translate(-30px,30px) scale(0.94); }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity:0; }
+  to   { opacity:1; }
+}
+
+@keyframes shimmerBorder {
+  0%,100% { box-shadow: 0 0 0px #7c6dff00, inset 0 0 0px #7c6dff00; }
+  50%     { box-shadow: 0 0 24px #7c6dff40, inset 0 0 12px #7c6dff15; }
+}
+
+@keyframes progressFill {
+  from { width: 0%; }
+}
+
+.animate-fade-slide-up { animation: fadeSlideUp 0.55s cubic-bezier(.22,1,.36,1) both; }
+.animate-fade-in       { animation: fadeIn 0.4s ease both; }
