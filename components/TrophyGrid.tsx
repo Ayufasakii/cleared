@@ -55,6 +55,7 @@ function TrophyCard({ trophy }: { trophy: Trophy }) {
             src={trophy.imageUrl}
             alt={trophy.name}
             fill
+            unoptimized
             className="object-cover"
             style={{ filter: isBlurred ? "blur(8px)" : "none" }}
             sizes="150px"
